@@ -7,7 +7,11 @@ Hearthstone tracker built for Mac OS X
 ![Preview of the application](app.png)
 
 
-It reads logs the game puts out to parse what is happening.
+## General
+
+* The application reads logs the game puts out to parse what is happening. 
+* It's a background application (only using a status bar icon).
+* It shows if Hearthstone is running in the main window.
 
 ### Note
 
