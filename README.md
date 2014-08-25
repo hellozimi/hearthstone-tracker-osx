@@ -16,3 +16,12 @@ Hearthstone tracker built for Mac OS X
 ### Note
 
 The logs doesn't say when someone concedes, so this needs to get some other kind of solution. At the moment you can either claim win/loss per game. 
+
+
+## TODO
+
+* See if someone concedes
+* Only log the last action as `endTime` for a game if win/loss is claimed.
+* Change to a better name
+* More statistics (per class)
+* Open at login
