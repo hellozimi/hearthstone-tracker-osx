@@ -178,20 +178,33 @@ NSString * const kDataManagerDidRecieveNewGame = @"kDataManagerDidRecieveNewGame
 }
 
 - (void)importData {
-    
-    if ([self cardsTableExists]) { // Only import once
+	
+	// Deleting and recreating the table each time
+	
+    /*if ([self cardsTableExists]) { // Only import once
         return;
-    }
+    }*/
+	
+	// Quick profile
+	NSDate *startDate = [NSDate date];
     
     NSString *dataFilePath = [[NSBundle mainBundle] pathForResource:@"AllSets" ofType:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfFile:dataFilePath];
     NSError *error = nil;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-    
-    const char *sql_stmt =
+	
+	char *errMsg;
+	
+	const char *sql_stmt =
+	"DROP TABLE IF EXISTS `cards`";
+	
+	if (sqlite3_exec(_db, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+	{
+		NSLog(@"%s", errMsg);
+	}
+	
+    sql_stmt =
     "CREATE TABLE IF NOT EXISTS `cards` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `card_id` TEXT, `cost` INTEGER, `type` TEXT, `rarity` TEXT, `faction` TEXT, `text` TEXT, `flavor` TEXT, `artist` TEXT, `playerClass` TEXT, attack INTEGER, `health` INTEGER, `collectible` INTEGER, `elite` INTEGER)";
-    
-    char *errMsg;
     
     if (sqlite3_exec(_db, sql_stmt, NULL, NULL, &errMsg) == SQLITE_OK) {
         for (NSString *key in json) {
@@ -230,6 +243,8 @@ NSString * const kDataManagerDidRecieveNewGame = @"kDataManagerDidRecieveNewGame
     else {
         NSLog(@"%s", errMsg);
     }
+	
+	//NSLog(@"Time to delete and create the `cards` tables : %f ms", -[startDate timeIntervalSinceNow]);
 }
 
 #pragma mark - SQL fetch helper
