@@ -101,9 +101,9 @@ static const float offsetTop = 90;
     _friendlyHeroView.layer.backgroundColor = _match.friendlyHero.color.CGColor;
     _opponentHeroView.layer.backgroundColor = _match.opponentHero.color.CGColor;
     
-    _friendlyHeroClassLabel.stringValue = _match.friendlyHero.className;
-    _opponentHeroClassLabel.stringValue = _match.opponentHero.className;
-    
+	_friendlyHeroClassLabel.stringValue = (_match.friendlyHero.className != nil) ? _match.friendlyHero.className : @"";
+	_opponentHeroClassLabel.stringValue = (_match.opponentHero.className != nil) ? _match.opponentHero.className : @"";
+	
     _friendlyCards = [self sortAndGroupCardArray:_match.friendlyCards];
     _opponentCards = [self sortAndGroupCardArray:_match.opponentCards];
     
