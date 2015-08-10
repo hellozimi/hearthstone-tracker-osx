@@ -18,6 +18,9 @@
     if (self) {
         self.startDate = [NSDate date];
         self.cardHistory = [NSMutableArray new];
+		
+		_friendlyPlayerID = _opponentPlayerID = -1;
+		_friendlyPlayerName = _opponentPlayerName = _player1Name = _player2Name = nil;
     }
     return self;
 }
@@ -53,6 +56,9 @@
         
         _friendlyHeroId = [coder decodeObjectForKey:@"friendlyHeroId"];
         _opponentHeroId = [coder decodeObjectForKey:@"opponentHeroId"];
+		
+		_friendlyPlayerName = [coder decodeObjectForKey:@"friendlyPlayerName"];
+		_opponentPlayerName = [coder decodeObjectForKey:@"opponentPlayerName"];
         
         _cardHistory = [coder decodeObjectForKey:@"cardHistory"];
     }
@@ -83,6 +89,8 @@
     [aCoder encodeObject:_endDate forKey:@"endDate"];
     [aCoder encodeObject:_friendlyHeroId forKey:@"friendlyHeroId"];
     [aCoder encodeObject:_opponentHeroId forKey:@"opponentHeroId"];
+	[aCoder encodeObject:_friendlyPlayerName forKey:@"friendlyPlayerName"];
+	[aCoder encodeObject:_opponentPlayerName forKey:@"opponentPlayerName"];
     [aCoder encodeObject:_cardHistory forKey:@"cardHistory"];
 }
 

@@ -24,6 +24,15 @@
 @property (nonatomic) NSString *friendlyHeroId;
 @property (nonatomic) NSString *opponentHeroId;
 
+@property (nonatomic) SInt32 friendlyPlayerID;
+@property (nonatomic) SInt32 opponentPlayerID;
+
+@property (nonatomic) NSString *friendlyPlayerName;
+@property (nonatomic) NSString *opponentPlayerName;
+
+@property (nonatomic) NSString *player1Name;
+@property (nonatomic) NSString *player2Name;
+
 @property NSMutableArray *cardHistory;
 
 @property Hero *friendlyHero;

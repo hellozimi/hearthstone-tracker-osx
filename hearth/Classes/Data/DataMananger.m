@@ -186,7 +186,7 @@ NSString * const kDataManagerDidRecieveNewGame = @"kDataManagerDidRecieveNewGame
     }*/
 	
 	// Quick profile
-	NSDate *startDate = [NSDate date];
+	//NSDate *startDate = [NSDate date];
     
     NSString *dataFilePath = [[NSBundle mainBundle] pathForResource:@"AllSets" ofType:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfFile:dataFilePath];

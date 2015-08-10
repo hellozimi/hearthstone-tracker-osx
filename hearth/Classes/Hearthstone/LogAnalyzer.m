@@ -92,8 +92,28 @@
         
         //NSLog(@"Card %s from %s -> %s. (draw: %d, mulligan %d, discard %d)", cardID.UTF8String, from.UTF8String, to.UTF8String, draw, mulligan, discard);
     }
+	[self analyzeForPlayerName:line];
     [self analyzeForCoin:line];
     [self analyzeForHero:line];
+	[self analyzeForWin:line];
+}
+
+- (void)analyzeForPlayerName:(NSString *)line {
+	static NSString *pattern = @"TAG_CHANGE Entity=(.*) tag=PLAYER_ID value=(.*)";
+	NSError *error = nil;
+	NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+	if (error) {
+		NSLog(@"%@", [error localizedDescription]);
+		return;
+	}
+	
+	if ([regexp numberOfMatchesInString:line options:0 range:NSMakeRange(0, line.length)] != 0) {
+		//NSLog(@"%@", line);
+		NSString *playerName = [regexp matchWithString:line atIndex:1];
+		SInt32 playerID = (SInt32)[[regexp matchWithString:line atIndex:2] integerValue];
+		NSAssert(playerID == 1 || playerID == 2, @"Invalid playerID");
+		_playerName(playerID, playerName);
+	}
 }
 
 - (void)analyzeForCoin:(NSString *)line {
@@ -114,6 +134,7 @@
         }
     }
 }
+
 - (void)analyzeForHero:(NSString *)line {
     static NSString *pattern = @"ProcessChanges.*TRANSITIONING card \\[name=(.*).*zone=PLAY.*cardId=(.*).*player=(\\d)\\] to (.*) \\(Hero\\)";
     NSError *error = nil;
@@ -124,19 +145,39 @@
     }
     
     if ([regexp numberOfMatchesInString:line options:0 range:NSMakeRange(0, line.length)] != 0) {
-        NSLog(@"%@", line);
+        //NSLog(@"%@", line);
         //NSString *name = [regexp matchWithString:line atIndex:1];
         NSString *cardId = [regexp matchWithString:line atIndex:2];
-        //NSString *player = [regexp matchWithString:line atIndex:3];
+        SInt32 playerID = (SInt32)[[regexp matchWithString:line atIndex:3] integerValue];
+		NSAssert(playerID == 1 || playerID == 2, @"playerID invalid");
         NSString *to   = [regexp matchWithString:line atIndex:4];
         
         if([to isEqualToString:@"FRIENDLY PLAY"]) {
-            _playerHero(PlayerMe, cardId);
+            _playerHero(PlayerMe, cardId, playerID);
         }
         else {
-            _playerHero(PlayerOpponent, cardId);
+            _playerHero(PlayerOpponent, cardId, playerID);
         }
     }
+}
+
+- (void)analyzeForWin:(NSString *)line {
+	static NSString *pattern = @"TAG_CHANGE Entity=(.*) tag=PLAYSTATE value=(.*)";
+	NSError *error = nil;
+	NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+	if (error) {
+		NSLog(@"%@", [error localizedDescription]);
+		return;
+	}
+	
+	if ([regexp numberOfMatchesInString:line options:0 range:NSMakeRange(0, line.length)] != 0) {
+		NSString *playerName = [regexp matchWithString:line atIndex:1];
+		NSString *value   = [regexp matchWithString:line atIndex:2];
+		
+		if ([value isEqualToString:@"WON"]) {
+			_playerWon(playerName);
+		}
+	}
 }
 
 @end
