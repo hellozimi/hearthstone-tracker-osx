@@ -99,7 +99,7 @@
 }
 
 - (void)analyzeForPlayerName:(NSString *)line {
-	static NSString *pattern = @"TAG_CHANGE Entity=(.*) tag=PLAYER_ID value=(.*)";
+	static NSString *pattern = @"GameState.DebugPrintPower\\(\\) - TAG_CHANGE Entity=(.*) tag=PLAYER_ID value=(.*)";
 	NSError *error = nil;
 	NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
 	if (error) {
