@@ -17,6 +17,8 @@
 @property (nonatomic, copy) void(^playerDidReturnCard)(Player player, NSString *cardID);
 @property (nonatomic, copy) void(^playerDidDie)(Player player);
 @property (nonatomic, copy) void(^playerGotCoin)(Player player);
-@property (nonatomic, copy) void(^playerHero)(Player player, NSString *heroId);
+@property (nonatomic, copy) void(^playerHero)(Player player, NSString *heroId, SInt32 playerID);
+@property (nonatomic, copy) void(^playerName)(SInt32 playerID, NSString *playerName);
+@property (nonatomic, copy) void(^playerWon)(NSString *playerName);
 
 @end
